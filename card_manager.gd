@@ -3,6 +3,7 @@ extends Node2D
 @export var card_hover_scale:Vector2 = Vector2(1.05, 1.05)
 
 const COLLISION_MASK_CARD:int = 1
+const COLLISION_MASK_CARD_SLOT:int = 2
 
 var screen_size:Vector2
 var card_being_dragged:Card
@@ -33,8 +34,13 @@ func start_drag(card:Card):
 	card.scale = Vector2.ONE
 
 func finish_drag(card:Card):
-	card_being_dragged = null
+	var card_slot_found:CardSlot = raycast_check_for_card_slot()
+	if card_slot_found and not card_slot_found.card_in_slot:
+		card_being_dragged.position = card_slot_found.position
+		card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
+		card_slot_found.card_in_slot = true
 	card.scale = card_hover_scale
+	card_being_dragged = null
 
 func connect_card_signals(card:Card) -> void:
 	card.hovered.connect(on_hovered_over_card)
@@ -62,7 +68,18 @@ func highlight_card(card:Card, hovered:bool) -> void:
 		card.scale = Vector2.ONE
 		card.z_index = 1
 
-func raycast_check_for_card() -> Node2D:
+func raycast_check_for_card_slot() -> CardSlot:
+	var space_state = get_world_2d().direct_space_state
+	var parameters = PhysicsPointQueryParameters2D.new()
+	parameters.position = get_global_mouse_position()
+	parameters.collide_with_areas = true
+	parameters.collision_mask = COLLISION_MASK_CARD_SLOT
+	var result = space_state.intersect_point(parameters)
+	if result.size() > 0:
+		return result[0].collider.get_parent()
+	return null
+
+func raycast_check_for_card() -> Card:
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
 	parameters.position = get_global_mouse_position()
