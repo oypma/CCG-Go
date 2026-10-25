@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ben1g0hlxn7t1"]
+
+[ext_resource type="Texture2D" uid="uid://dt2bb3pa350ah" path="res://sprites/Knight.png" id="1_fjcud"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_53q0u"]
+size = Vector2(168, 246)
+
+[node name="Card" type="Node2D" unique_id=1186720335]
+
+[node name="CardImage" type="Sprite2D" parent="." unique_id=1309811270]
+texture = ExtResource("1_fjcud")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=405089777]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=412730549]
+shape = SubResource("RectangleShape2D_53q0u")
