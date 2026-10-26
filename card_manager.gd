@@ -1,4 +1,4 @@
-extends Node2D
+class_name CardManager extends Node2D
 
 @export var card_hover_scale:Vector2 = Vector2(1.05, 1.05)
 
@@ -8,9 +8,11 @@ const COLLISION_MASK_CARD_SLOT:int = 2
 var screen_size:Vector2
 var card_being_dragged:Card
 var is_hovering_on_card:bool = false
+var player_hand_reference:PlayerHand
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
+	player_hand_reference = $"../PlayerHand"
 
 func _process(delta: float) -> void:
 	if card_being_dragged:
@@ -36,9 +38,13 @@ func start_drag(card:Card):
 func finish_drag(card:Card):
 	var card_slot_found:CardSlot = raycast_check_for_card_slot()
 	if card_slot_found and not card_slot_found.card_in_slot:
+		player_hand_reference.remove_card_from_hand(card_being_dragged)
+		
 		card_being_dragged.position = card_slot_found.position
 		card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
 		card_slot_found.card_in_slot = true
+	else:
+		player_hand_reference.add_card_to_hand(card_being_dragged)
 	card.scale = card_hover_scale
 	card_being_dragged = null
 

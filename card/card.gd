@@ -4,6 +4,8 @@ extends Node2D
 signal hovered(card:Card)
 signal hovered_off(card:Card)
 
+var starting_position:Vector2
+
 func _ready() -> void:
 	get_parent().connect_card_signals(self)
 
