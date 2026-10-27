@@ -4,6 +4,7 @@ class_name CardManager extends Node2D
 
 const COLLISION_MASK_CARD:int = 1
 const COLLISION_MASK_CARD_SLOT:int = 2
+const DEFAULT_CARD_MOVE_SPEED:float = 0.1
 
 var screen_size:Vector2
 var card_being_dragged:Card
@@ -13,23 +14,13 @@ var player_hand_reference:PlayerHand
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	player_hand_reference = $"../PlayerHand"
+	$"../InputManager".left_mouse_button_released.connect(on_left_click_released)
 
 func _process(delta: float) -> void:
 	if card_being_dragged:
 		var mouse_pos:Vector2 = get_global_mouse_position()
 		card_being_dragged.position = Vector2(clamp(mouse_pos.x, 0, screen_size.x), 
 		clamp(mouse_pos.y, 0, screen_size.y))
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			var card = raycast_check_for_card()
-			if card:
-				start_drag(card)
-		else:
-			var card = raycast_check_for_card()
-			if card:
-				finish_drag(card)
 
 func start_drag(card:Card):
 	card_being_dragged = card
@@ -44,13 +35,17 @@ func finish_drag(card:Card):
 		card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
 		card_slot_found.card_in_slot = true
 	else:
-		player_hand_reference.add_card_to_hand(card_being_dragged)
+		player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card.scale = card_hover_scale
 	card_being_dragged = null
 
 func connect_card_signals(card:Card) -> void:
 	card.hovered.connect(on_hovered_over_card)
 	card.hovered_off.connect(on_hovered_off_card)
+
+func on_left_click_released() -> void:
+	if card_being_dragged:
+		finish_drag(card_being_dragged)
 
 func on_hovered_over_card(card:Card):
 	if !is_hovering_on_card:

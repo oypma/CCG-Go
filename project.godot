@@ -28,6 +28,8 @@ window/vsync/vsync_mode=0
 folder_colors={
 "res://card/": "red",
 "res://card_slot/": "teal",
+"res://deck/": "purple",
+"res://input_manager/": "green",
 "res://main/": "yellow",
 "res://player_hand/": "blue",
 "res://sprites/": "pink"

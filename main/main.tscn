@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://mor31csg31b3" path="res://card_manager.gd" id="1_pjrb6"]
 [ext_resource type="PackedScene" uid="uid://bj3fgfl7p48vh" path="res://player_hand/player_hand.tscn" id="3_c651c"]
 [ext_resource type="PackedScene" uid="uid://bb4e7mdfyo3te" path="res://card_slot/card_slot.tscn" id="3_xwkvk"]
+[ext_resource type="PackedScene" uid="uid://cxy0py5kyt0tu" path="res://deck/deck.tscn" id="4_c651c"]
+[ext_resource type="PackedScene" uid="uid://bfxrhvufexrc0" path="res://input_manager/input_manager.tscn" id="5_3wy1v"]
+[ext_resource type="Script" uid="uid://cdk3fu0xge530" path="res://input_manager/input_manager.gd" id="6_kfbq2"]
 
 [node name="Main" type="Node2D" unique_id=1319750175]
 
@@ -13,3 +16,9 @@ script = ExtResource("1_pjrb6")
 position = Vector2(214, 172)
 
 [node name="PlayerHand" parent="." unique_id=842096855 instance=ExtResource("3_c651c")]
+
+[node name="Deck" parent="." unique_id=2080693256 instance=ExtResource("4_c651c")]
+position = Vector2(150, 890)
+
+[node name="InputManager" parent="." unique_id=2057775287 instance=ExtResource("5_3wy1v")]
+script = ExtResource("6_kfbq2")
