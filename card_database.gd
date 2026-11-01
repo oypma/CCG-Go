@@ -1,5 +1,5 @@
 const CARDS:Dictionary = {
-	"knight" : [2, 3],
-	"archer" : [1, 1],
-	"demon" : [5, 7]
+	"knight" : [2, 3, "monster"],
+	"archer" : [1, 1, "monster"],
+	"demon" : [5, 7, "monster"]
 }

@@ -190,6 +190,7 @@ _data = {
 }
 
 [node name="Card" type="Node2D" unique_id=1186720335]
+scale = Vector2(0.8, 0.8)
 script = ExtResource("1_trrkg")
 
 [node name="CardImageBack" type="Sprite2D" parent="." unique_id=1996451826]

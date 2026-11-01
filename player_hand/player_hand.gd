@@ -1,7 +1,7 @@
 class_name PlayerHand extends Node2D
 
-const CARD_WIDTH:float = 200.0
-const HAND_Y_POSITION:float = 890.0
+const CARD_WIDTH:float = 160
+const HAND_Y_POSITION:float = 955.0
 const DEFAULT_CARD_MOVE_SPEED:float = 0.1
 
 var player_hand:Array = []

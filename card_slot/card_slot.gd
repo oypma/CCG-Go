@@ -1,3 +1,7 @@
-class_name CardSlot extends Node2D
+class_name CardSlot extends Node
 
-var card_in_slot:bool = false
+func _ready() -> void:
+	pass
+
+func _process(delta: float) -> void:
+	pass
