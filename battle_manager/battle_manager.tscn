@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://uenecsktnas1"]
+
+[node name="BattleManager" type="Node" unique_id=926762063]
+
+[node name="BattleTimer" type="Timer" parent="." unique_id=1048158252]
+one_shot = true

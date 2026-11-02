@@ -2,6 +2,7 @@ extends Node2D
 
 signal left_mouse_button_clicked
 signal left_mouse_button_released
+signal tutorial_show
 
 const COLLISION_MASK_CARD:int = 1
 const COLLISION_MASK_DECK:int = 4
@@ -12,6 +13,14 @@ var deck_reference:Deck
 func _ready() -> void:
 	card_manager_reference = get_parent().find_child("CardManager")
 	deck_reference = get_parent().find_child("Deck")
+
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("show_tutorial"):
+		for c in get_parent().find_child("Tutorial").get_children():
+			c.visible = true
+	elif Input.is_action_just_released("show_tutorial"):
+		for c in get_parent().find_child("Tutorial").get_children():
+			c.visible = false
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

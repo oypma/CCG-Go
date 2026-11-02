@@ -96,7 +96,7 @@ tracks/6/keys = {
 
 [sub_resource type="Animation" id="Animation_trrkg"]
 resource_name = "card_flip"
-length = 0.19999999999999998
+length = 0.2
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false

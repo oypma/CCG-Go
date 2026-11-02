@@ -46,6 +46,7 @@ func finish_drag():
 				card_slot_found.card_in_slot = true
 				card_slot_found.z_index = -2
 				card_being_dragged = null
+				played_monster_card_this_turn = true
 				return
 	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card_being_dragged = null
@@ -113,3 +114,6 @@ func get_card_with_highest_z_index(cards:Array[Dictionary]) -> Card:
 			highest_z_index = current_card.z_index
 	
 	return highest_z_card
+
+func reset_played_monster() -> void:
+	played_monster_card_this_turn = false

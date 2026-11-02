@@ -3,12 +3,17 @@
 [ext_resource type="Script" uid="uid://mor31csg31b3" path="res://card_manager.gd" id="1_pjrb6"]
 [ext_resource type="Script" uid="uid://batb4c8gh8esr" path="res://card_slot/magic_card_slot.gd" id="2_67ri8"]
 [ext_resource type="PackedScene" uid="uid://bj3fgfl7p48vh" path="res://player_hand/player_hand.tscn" id="3_c651c"]
-[ext_resource type="PackedScene" uid="uid://dg2fg4u8xdndo" path="res://card_slot/opponent/enemy_card_slot.tscn" id="3_grrlh"]
+[ext_resource type="PackedScene" uid="uid://dg2fg4u8xdndo" path="res://card_slot/opponent/opponent_card_slot.tscn" id="3_grrlh"]
 [ext_resource type="PackedScene" uid="uid://bb4e7mdfyo3te" path="res://card_slot/card_slot.tscn" id="3_xwkvk"]
 [ext_resource type="PackedScene" uid="uid://cxy0py5kyt0tu" path="res://deck/deck.tscn" id="4_c651c"]
 [ext_resource type="PackedScene" uid="uid://bfxrhvufexrc0" path="res://input_manager/input_manager.tscn" id="5_3wy1v"]
 [ext_resource type="Script" uid="uid://cdk3fu0xge530" path="res://input_manager/input_manager.gd" id="6_kfbq2"]
+[ext_resource type="PackedScene" uid="uid://cdglcl6i65bsk" path="res://enemy_hand/opponent_hand.tscn" id="6_na0o7"]
 [ext_resource type="PackedScene" uid="uid://d28oj3dvsuk4q" path="res://deck/opponent/o_deck.tscn" id="7_4dugh"]
+[ext_resource type="Script" uid="uid://c5kx3vkit0px" path="res://enemy_hand/opponent_hand.gd" id="7_73k8k"]
+[ext_resource type="PackedScene" uid="uid://uenecsktnas1" path="res://battle_manager/battle_manager.tscn" id="10_0i4oc"]
+[ext_resource type="Script" uid="uid://k1n3ud78yj4o" path="res://deck/opponent/o_deck.gd" id="10_fwcvl"]
+[ext_resource type="Script" uid="uid://dcwokn7gfm2b6" path="res://battle_manager/battle_manager.gd" id="11_bsumw"]
 
 [node name="Main" type="Node2D" unique_id=1319750175]
 
@@ -51,40 +56,43 @@ position = Vector2(1240, 570)
 
 [node name="Opponent" type="Node2D" parent="CardSlots" unique_id=1214792431]
 
-[node name="EnemyCardSlot" parent="CardSlots/Opponent" unique_id=549041507 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot" parent="CardSlots/Opponent" unique_id=549041507 instance=ExtResource("3_grrlh")]
 position = Vector2(960, 360)
 
-[node name="EnemyCardSlot2" parent="CardSlots/Opponent" unique_id=309451623 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot2" parent="CardSlots/Opponent" unique_id=309451623 instance=ExtResource("3_grrlh")]
 position = Vector2(820, 360)
 
-[node name="EnemyCardSlot3" parent="CardSlots/Opponent" unique_id=791500945 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot3" parent="CardSlots/Opponent" unique_id=791500945 instance=ExtResource("3_grrlh")]
 position = Vector2(680, 360)
 
-[node name="EnemyCardSlot4" parent="CardSlots/Opponent" unique_id=1603887994 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot4" parent="CardSlots/Opponent" unique_id=1603887994 instance=ExtResource("3_grrlh")]
 position = Vector2(1100, 360)
 
-[node name="EnemyCardSlot5" parent="CardSlots/Opponent" unique_id=1745801748 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot5" parent="CardSlots/Opponent" unique_id=1745801748 instance=ExtResource("3_grrlh")]
 position = Vector2(1240, 360)
 
-[node name="EnemyCardSlot6" parent="CardSlots/Opponent" unique_id=129535414 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot6" parent="CardSlots/Opponent" unique_id=129535414 instance=ExtResource("3_grrlh")]
 position = Vector2(960, 180)
 
-[node name="EnemyCardSlot7" parent="CardSlots/Opponent" unique_id=1299238931 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot7" parent="CardSlots/Opponent" unique_id=1299238931 instance=ExtResource("3_grrlh")]
 position = Vector2(820, 180)
 
-[node name="EnemyCardSlot8" parent="CardSlots/Opponent" unique_id=1583984222 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot8" parent="CardSlots/Opponent" unique_id=1583984222 instance=ExtResource("3_grrlh")]
 position = Vector2(680, 180)
 
-[node name="EnemyCardSlot9" parent="CardSlots/Opponent" unique_id=1876864025 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot9" parent="CardSlots/Opponent" unique_id=1876864025 instance=ExtResource("3_grrlh")]
 position = Vector2(1100, 180)
 
-[node name="EnemyCardSlot10" parent="CardSlots/Opponent" unique_id=1166649723 instance=ExtResource("3_grrlh")]
+[node name="OpponentCardSlot10" parent="CardSlots/Opponent" unique_id=1166649723 instance=ExtResource("3_grrlh")]
 position = Vector2(1240, 180)
 
 [node name="CardManager" type="Node2D" parent="." unique_id=139612115]
 script = ExtResource("1_pjrb6")
 
 [node name="PlayerHand" parent="." unique_id=842096855 instance=ExtResource("3_c651c")]
+
+[node name="OpponentHand" parent="." unique_id=1911260645 instance=ExtResource("6_na0o7")]
+script = ExtResource("7_73k8k")
 
 [node name="Deck" parent="." unique_id=2080693256 instance=ExtResource("4_c651c")]
 position = Vector2(140, 955)
@@ -102,8 +110,12 @@ text = "End Turn"
 [node name="O_Deck" parent="." unique_id=2050062588 instance=ExtResource("7_4dugh")]
 position = Vector2(1780, 125)
 scale = Vector2(0.8, 0.8)
+script = ExtResource("10_fwcvl")
 
-[node name="Label" type="Label" parent="." unique_id=1397081759]
+[node name="Tutorial" type="Node2D" parent="." unique_id=398852523]
+
+[node name="Label" type="Label" parent="Tutorial" unique_id=1397081759]
+visible = false
 offset_left = 467.0
 offset_top = 548.0
 offset_right = 596.0
@@ -111,10 +123,41 @@ offset_bottom = 590.0
 theme_override_font_sizes/font_size = 30
 text = "Living -->"
 
-[node name="Label2" type="Label" parent="." unique_id=563831901]
+[node name="Label2" type="Label" parent="Tutorial" unique_id=563831901]
+visible = false
 offset_left = 471.0
 offset_top = 722.0
 offset_right = 600.0
 offset_bottom = 764.0
 theme_override_font_sizes/font_size = 30
 text = "Magic -->"
+
+[node name="Label3" type="Label" parent="Tutorial" unique_id=762714448]
+visible = false
+offset_left = 34.0
+offset_top = 736.0
+offset_right = 399.0
+offset_bottom = 823.0
+theme_override_font_sizes/font_size = 30
+text = "Draw a card each turn
+             🡓 "
+
+[node name="Label4" type="Label" parent="Tutorial" unique_id=618124868]
+offset_left = 1337.0
+offset_top = 530.0
+offset_right = 1702.0
+offset_bottom = 617.0
+theme_override_font_sizes/font_size = 30
+text = "<-- Play a monster card
+     each turn"
+
+[node name="BattleManager" parent="." unique_id=926762063 instance=ExtResource("10_0i4oc")]
+script = ExtResource("11_bsumw")
+
+[node name="ShowTutorial" type="Label" parent="." unique_id=1474515503]
+offset_left = 268.0
+offset_top = 615.0
+offset_right = 633.0
+offset_bottom = 702.0
+theme_override_font_sizes/font_size = 20
+text = "Show tutorial (Q)"

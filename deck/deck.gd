@@ -52,3 +52,6 @@ func draw_card() -> void:
 	get_parent().find_child("PlayerHand").add_card_to_hand(new_card, CARD_DRAW_SPEED)
 	
 	new_card.get_node("AnimationPlayer").play("card_flip")
+
+func reset_draw() -> void:
+	drawn_card_this_turn = false
