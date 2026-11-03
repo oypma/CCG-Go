@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://261gukuoujn6"]
+
+[ext_resource type="Texture2D" uid="uid://brmxa72bd2q85" path="res://sprites/CardSlot.png" id="1_71xpo"]
+
+[node name="PlayerDiscard" type="Node2D" unique_id=1627599464]
+scale = Vector2(0.6, 0.6)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1168424975]
+texture = ExtResource("1_71xpo")

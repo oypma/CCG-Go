@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://uenecsktnas1" path="res://battle_manager/battle_manager.tscn" id="10_0i4oc"]
 [ext_resource type="Script" uid="uid://k1n3ud78yj4o" path="res://deck/opponent/o_deck.gd" id="10_fwcvl"]
 [ext_resource type="Script" uid="uid://dcwokn7gfm2b6" path="res://battle_manager/battle_manager.gd" id="11_bsumw"]
+[ext_resource type="PackedScene" uid="uid://261gukuoujn6" path="res://player_discard/player_discard.tscn" id="15_5xyti"]
+[ext_resource type="PackedScene" uid="uid://h263qag77qh0" path="res://opponent_discard/opponent_discard.tscn" id="16_n3o0a"]
 
 [node name="Main" type="Node2D" unique_id=1319750175]
 
@@ -56,21 +58,6 @@ position = Vector2(1240, 570)
 
 [node name="Opponent" type="Node2D" parent="CardSlots" unique_id=1214792431]
 
-[node name="OpponentCardSlot" parent="CardSlots/Opponent" unique_id=549041507 instance=ExtResource("3_grrlh")]
-position = Vector2(960, 360)
-
-[node name="OpponentCardSlot2" parent="CardSlots/Opponent" unique_id=309451623 instance=ExtResource("3_grrlh")]
-position = Vector2(820, 360)
-
-[node name="OpponentCardSlot3" parent="CardSlots/Opponent" unique_id=791500945 instance=ExtResource("3_grrlh")]
-position = Vector2(680, 360)
-
-[node name="OpponentCardSlot4" parent="CardSlots/Opponent" unique_id=1603887994 instance=ExtResource("3_grrlh")]
-position = Vector2(1100, 360)
-
-[node name="OpponentCardSlot5" parent="CardSlots/Opponent" unique_id=1745801748 instance=ExtResource("3_grrlh")]
-position = Vector2(1240, 360)
-
 [node name="OpponentCardSlot6" parent="CardSlots/Opponent" unique_id=129535414 instance=ExtResource("3_grrlh")]
 position = Vector2(960, 180)
 
@@ -85,6 +72,23 @@ position = Vector2(1100, 180)
 
 [node name="OpponentCardSlot10" parent="CardSlots/Opponent" unique_id=1166649723 instance=ExtResource("3_grrlh")]
 position = Vector2(1240, 180)
+
+[node name="MonsterCardSlots" type="Node2D" parent="CardSlots/Opponent" unique_id=117832787]
+
+[node name="OpponentCardSlot" parent="CardSlots/Opponent/MonsterCardSlots" unique_id=549041507 instance=ExtResource("3_grrlh")]
+position = Vector2(960, 360)
+
+[node name="OpponentCardSlot2" parent="CardSlots/Opponent/MonsterCardSlots" unique_id=309451623 instance=ExtResource("3_grrlh")]
+position = Vector2(820, 360)
+
+[node name="OpponentCardSlot3" parent="CardSlots/Opponent/MonsterCardSlots" unique_id=791500945 instance=ExtResource("3_grrlh")]
+position = Vector2(680, 360)
+
+[node name="OpponentCardSlot4" parent="CardSlots/Opponent/MonsterCardSlots" unique_id=1603887994 instance=ExtResource("3_grrlh")]
+position = Vector2(1100, 360)
+
+[node name="OpponentCardSlot5" parent="CardSlots/Opponent/MonsterCardSlots" unique_id=1745801748 instance=ExtResource("3_grrlh")]
+position = Vector2(1240, 360)
 
 [node name="CardManager" type="Node2D" parent="." unique_id=139612115]
 script = ExtResource("1_pjrb6")
@@ -143,6 +147,7 @@ text = "Draw a card each turn
              🡓 "
 
 [node name="Label4" type="Label" parent="Tutorial" unique_id=618124868]
+visible = false
 offset_left = 1337.0
 offset_top = 530.0
 offset_right = 1702.0
@@ -150,6 +155,37 @@ offset_bottom = 617.0
 theme_override_font_sizes/font_size = 30
 text = "<-- Play a monster card
      each turn"
+
+[node name="Label5" type="Label" parent="Tutorial" unique_id=1000733796]
+visible = false
+offset_left = 34.0
+offset_top = 460.0
+offset_right = 399.0
+offset_bottom = 682.0
+theme_override_font_sizes/font_size = 30
+text = "            ↑
+Opponent health
+
+Your health
+            ↓"
+
+[node name="Label6" type="Label" parent="Tutorial" unique_id=1727955269]
+visible = false
+offset_left = 1601.0
+offset_top = 645.0
+offset_right = 1966.0
+offset_bottom = 867.0
+theme_override_font_sizes/font_size = 30
+text = "<-- Your discard pile"
+
+[node name="Label7" type="Label" parent="Tutorial" unique_id=1537008311]
+visible = false
+offset_left = 24.0
+offset_top = 246.0
+offset_right = 389.0
+offset_bottom = 468.0
+theme_override_font_sizes/font_size = 25
+text = "Opponent discard pile -->"
 
 [node name="BattleManager" parent="." unique_id=926762063 instance=ExtResource("10_0i4oc")]
 script = ExtResource("11_bsumw")
@@ -161,3 +197,25 @@ offset_right = 633.0
 offset_bottom = 702.0
 theme_override_font_sizes/font_size = 20
 text = "Show tutorial (Q)"
+
+[node name="PlayerHealth" type="RichTextLabel" parent="." unique_id=1504572044]
+offset_left = 130.0
+offset_top = 670.0
+offset_right = 170.0
+offset_bottom = 710.0
+scale = Vector2(2, 2)
+text = "0"
+
+[node name="OpponentHealth" type="RichTextLabel" parent="." unique_id=67018403]
+offset_left = 130.0
+offset_top = 430.0
+offset_right = 170.0
+offset_bottom = 470.0
+scale = Vector2(2, 2)
+text = "0"
+
+[node name="PlayerDiscard" parent="." unique_id=1627599464 instance=ExtResource("15_5xyti")]
+position = Vector2(1500, 660)
+
+[node name="OpponentDiscard" parent="." unique_id=342447829 instance=ExtResource("16_n3o0a")]
+position = Vector2(400, 270)

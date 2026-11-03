@@ -10,7 +10,7 @@ const CARD_BIGGER_SCALE:float = 0.85
 const CARD_SMALLER_SCALE:float = 0.6 
 
 var screen_size:Vector2
-var card_being_dragged:Card
+var card_being_dragged:PlayerCard
 var is_hovering_on_card:bool = false
 var player_hand_reference:PlayerHand
 var played_monster_card_this_turn:bool = false
@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 		card_being_dragged.position = Vector2(clamp(mouse_pos.x, 0, screen_size.x), 
 		clamp(mouse_pos.y, 0, screen_size.y))
 
-func start_drag(card:Card):
+func start_drag(card:PlayerCard):
 	card_being_dragged = card
 	card.scale = Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE)
 
@@ -45,13 +45,14 @@ func finish_drag():
 				card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
 				card_slot_found.card_in_slot = true
 				card_slot_found.z_index = -2
+				get_parent().find_child("BattleManager").player_cards_on_battlefield.append(card_being_dragged)
 				card_being_dragged = null
 				played_monster_card_this_turn = true
 				return
 	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card_being_dragged = null
 
-func connect_card_signals(card:Card) -> void:
+func connect_card_signals(card:PlayerCard) -> void:
 	card.hovered.connect(on_hovered_over_card)
 	card.hovered_off.connect(on_hovered_off_card)
 
@@ -59,15 +60,15 @@ func on_left_click_released() -> void:
 	if card_being_dragged:
 		finish_drag()
 
-func on_hovered_over_card(card:Card):
+func on_hovered_over_card(card:PlayerCard):
 	if !is_hovering_on_card:
 		is_hovering_on_card = true
 		highlight_card(card, true)
 
-func on_hovered_off_card(card:Card):
+func on_hovered_off_card(card:PlayerCard):
 	if !card.card_slot_in and !card_being_dragged:
 		highlight_card(card, false)
-		var new_card_hovered:Card = raycast_check_for_card()
+		var new_card_hovered:PlayerCard = raycast_check_for_card()
 		if new_card_hovered:
 			highlight_card(new_card_hovered, true)
 		else:
@@ -104,11 +105,11 @@ func raycast_check_for_card() -> Card:
 	return null
 
 func get_card_with_highest_z_index(cards:Array[Dictionary]) -> Card:
-	var highest_z_card:Card = cards[0].collider.get_parent()
+	var highest_z_card:PlayerCard = cards[0].collider.get_parent()
 	var highest_z_index:int = highest_z_card.z_index
 	
 	for i in range(1, cards.size()):
-		var current_card:Card = cards[i].collider.get_parent()
+		var current_card:PlayerCard = cards[i].collider.get_parent()
 		if current_card.z_index > highest_z_index:
 			highest_z_card = current_card
 			highest_z_index = current_card.z_index

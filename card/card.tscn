@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ben1g0hlxn7t1"]
 
 [ext_resource type="Texture2D" uid="uid://dt2bb3pa350ah" path="res://sprites/knight.png" id="1_fjcud"]
-[ext_resource type="Script" uid="uid://d0af6vd7ih6es" path="res://card/card.gd" id="1_trrkg"]
+[ext_resource type="Script" uid="uid://d0af6vd7ih6es" path="res://card/player_card.gd" id="1_trrkg"]
 [ext_resource type="Texture2D" uid="uid://cb5en5j1p0xmd" path="res://sprites/Deck.png" id="2_ply2h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_53q0u"]

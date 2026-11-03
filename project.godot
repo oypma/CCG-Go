@@ -33,6 +33,7 @@ folder_colors={
 "res://enemy_hand/": "orange",
 "res://input_manager/": "green",
 "res://main/": "yellow",
+"res://opponent_discard/": "green",
 "res://player_hand/": "blue",
 "res://sprites/": "pink"
 }
