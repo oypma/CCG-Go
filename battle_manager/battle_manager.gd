@@ -10,6 +10,9 @@ var empty_monster_card_slots:Array = []
 var opponent_hand:OpponentHand = null
 var player_health_label:RichTextLabel = null
 var opponent_health_label:RichTextLabel = null
+var player_cards_that_attacked_this_turn:Array = []
+var is_opponents_turn:bool = false
+var player_is_attacking:bool = false
 
 var opponent_cards_on_battlefield:Array = []
 var player_cards_on_battlefield:Array = []
@@ -39,6 +42,9 @@ func _ready() -> void:
 	opponent_health_label.text = str(opponent_health)
 
 func _on_end_turn_button_pressed() -> void:
+	is_opponents_turn = true
+	get_parent().find_child("CardManager").unselect_selected_monster()
+	player_cards_that_attacked_this_turn.clear()
 	opponent_turn()
 	
 func opponent_turn() -> void:
@@ -71,7 +77,11 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 	if attacker == "opponent":
 		new_pos_y = 1080
 	else:
+		get_parent().find_child("EndTurnButton").disabled = true
+		get_parent().find_child("EndTurnButton").visible = false
+		player_is_attacking = true
 		new_pos_y = 0
+		player_cards_that_attacked_this_turn.append(attacking_card)
 	
 	var new_pos:Vector2 = Vector2(attacking_card.position.x, new_pos_y)
 	
@@ -86,7 +96,8 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 		player_health = max(0, player_health - attacking_card.attack)
 		player_health_label.text = str(player_health)
 	else:
-		opponent_health = max(0, player_health - attacking_card.attack)
+		opponent_health = max(0, opponent_health - attacking_card.attack)
+		print(opponent_health)
 		opponent_health_label.text = str(opponent_health)
 	
 	var tween2:Tween = get_tree().create_tween()
@@ -94,8 +105,20 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 	
 	attacking_card.z_index = 0
 	await wait(1)
+	
+	if attacker == "player":
+		player_is_attacking = false
+		get_parent().find_child("EndTurnButton").disabled = false
+		get_parent().find_child("EndTurnButton").visible = true
 
 func attack(attacking_card:Card, defending_card:Card, attacker:String) -> void:
+	if attacker == "player":
+		player_is_attacking = true
+		get_parent().find_child("CardManager").selected_monster = null
+		get_parent().find_child("EndTurnButton").disabled = true
+		get_parent().find_child("EndTurnButton").visible = false
+		player_cards_that_attacked_this_turn.append(attacking_card)
+	
 	attacking_card.z_index = 5
 	var new_pos:Vector2 = Vector2(defending_card.position.x, defending_card.position.y + BATTLE_POS_OFFSET)
 	var tween:Tween = get_tree().create_tween()
@@ -126,17 +149,40 @@ func attack(attacking_card:Card, defending_card:Card, attacker:String) -> void:
 	
 	if card_was_destroyed:
 		await wait(1.0)
+	
+	if attacker == "player":
+		player_is_attacking = false
+		get_parent().find_child("EndTurnButton").disabled = false
+		get_parent().find_child("EndTurnButton").visible = true
 
 func destroy_card(card:Card, card_owner:String) -> void:
 	var new_pos:Vector2 = Vector2.ZERO
 	
 	if card_owner == "player":
+		card.defeated = true
+		card.get_node("Area2D/CollisionShape2D").disabled = true
 		new_pos = get_parent().find_child("PlayerDiscard").position
-	if card_owner == "opponent":
+		if card in player_cards_on_battlefield:
+			player_cards_on_battlefield.erase(card)
+		card.card_slot_in.get_node("Area2D/CollisionShape2D").disabled = false
+	else:
 		new_pos = get_parent().find_child("OpponentDiscard").position
+		if card in opponent_cards_on_battlefield:
+			opponent_cards_on_battlefield.erase(card)
+	
+	card.card_slot_in.card_in_slot = false
+	card.card_slot_in = null
 	
 	var tween:Tween = get_tree().create_tween()
 	tween.tween_property(card, "position", new_pos, CARD_MOVE_SPEED)
+
+func enemy_card_selected(defending_card:OpponentCard) -> void:
+	var attacking_card:PlayerCard = get_parent().find_child("CardManager").selected_monster
+	if attacking_card:
+		if defending_card in opponent_cards_on_battlefield:
+			if player_is_attacking == false:
+				get_parent().find_child("CardManager").selected_monster = null
+				attack(attacking_card, defending_card, "player")
 
 func try_play_card_with_highest_attack() -> void:
 	var _opponent_hand:Array = opponent_hand.opponent_hand
@@ -168,5 +214,6 @@ func wait(wait_time:float):
 func end_opponent_turn() -> void:
 	get_parent().find_child("Deck").reset_draw()
 	get_parent().find_child("CardManager").reset_played_monster()
+	is_opponents_turn = false
 	end_turn_button.disabled = false
 	end_turn_button.visible = true

@@ -186,6 +186,9 @@ _data = {
 &"card_flip": SubResource("Animation_trrkg")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5gso3"]
+size = Vector2(167.5, 246.25)
+
 [node name="OpponentCard" type="Node2D" unique_id=1186720335]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_5hni6")
@@ -218,3 +221,12 @@ text = "0"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=549786908]
 libraries/ = SubResource("AnimationLibrary_ply2h")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=123556304]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1272547432]
+position = Vector2(9.536741e-06, -0.6249856)
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_5gso3")

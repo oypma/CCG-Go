@@ -138,23 +138,25 @@ text = "Magic -->"
 
 [node name="Label3" type="Label" parent="Tutorial" unique_id=762714448]
 visible = false
-offset_left = 34.0
-offset_top = 736.0
-offset_right = 399.0
-offset_bottom = 823.0
+offset_left = 32.0
+offset_top = 715.0
+offset_right = 397.0
+offset_bottom = 847.0
 theme_override_font_sizes/font_size = 30
 text = "Draw a card each turn
+              <click>
              🡓 "
 
 [node name="Label4" type="Label" parent="Tutorial" unique_id=618124868]
 visible = false
-offset_left = 1337.0
-offset_top = 530.0
-offset_right = 1702.0
-offset_bottom = 617.0
+offset_left = 1322.0
+offset_top = 525.0
+offset_right = 1687.0
+offset_bottom = 657.0
 theme_override_font_sizes/font_size = 30
 text = "<-- Play a monster card
-     each turn"
+     each turn 
+       <drag and drop>"
 
 [node name="Label5" type="Label" parent="Tutorial" unique_id=1000733796]
 visible = false

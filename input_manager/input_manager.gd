@@ -6,6 +6,7 @@ signal tutorial_show
 
 const COLLISION_MASK_CARD:int = 1
 const COLLISION_MASK_DECK:int = 4
+const COLLISION_MASK_OPPONENT_CARD:int = 8
 
 var card_manager_reference:CardManager
 var deck_reference:Deck
@@ -41,7 +42,10 @@ func raycast_at_cursor() -> void:
 		if result_collision_mask == COLLISION_MASK_CARD:
 			var card_found:Card = result[0].collider.get_parent()
 			if card_found:
-				card_manager_reference.start_drag(card_found)
+				card_manager_reference.card_clicked(card_found)
 		elif result_collision_mask == COLLISION_MASK_DECK:
 			if !deck_reference.cant_draw_manually:
 				deck_reference.draw_card()
+		elif result_collision_mask == COLLISION_MASK_OPPONENT_CARD:
+			if !deck_reference.cant_draw_manually:
+				get_parent().find_child("BattleManager").enemy_card_selected(result[0].collider.get_parent())
