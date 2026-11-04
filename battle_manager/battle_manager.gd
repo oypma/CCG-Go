@@ -97,7 +97,6 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 		player_health_label.text = str(player_health)
 	else:
 		opponent_health = max(0, opponent_health - attacking_card.attack)
-		print(opponent_health)
 		opponent_health_label.text = str(opponent_health)
 	
 	var tween2:Tween = get_tree().create_tween()
@@ -110,6 +109,23 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 		player_is_attacking = false
 		get_parent().find_child("EndTurnButton").disabled = false
 		get_parent().find_child("EndTurnButton").visible = true
+	
+	if player_health <= 0:
+		get_parent().find_child("GameEndLabel").text = "Player 2 Wins!"
+		show_end_game()
+	elif opponent_health <= 0:
+		get_parent().find_child("GameEndLabel").text = "Player 1 Wins!"
+		show_end_game()
+
+func show_end_game() -> void:
+	get_parent().find_child("GameEnd").visible = true
+	get_parent().find_child("GameEndButton").pressed.connect(_on_end_game_button_pressed)
+
+func _on_end_game_button_pressed() -> void:
+	for c in get_parent().get_children():
+		if c.has_method("reset"):
+			c.reset()
+	get_parent().find_child("GameEnd").hide()
 
 func attack(attacking_card:Card, defending_card:Card, attacker:String) -> void:
 	if attacker == "player":

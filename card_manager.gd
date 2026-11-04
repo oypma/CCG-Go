@@ -153,3 +153,7 @@ func get_card_with_highest_z_index(cards:Array[Dictionary]) -> Card:
 
 func reset_played_monster() -> void:
 	played_monster_card_this_turn = false
+
+func reset() -> void:
+	for c in get_children():
+		c.queue_free()

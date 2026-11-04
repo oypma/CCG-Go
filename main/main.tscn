@@ -221,3 +221,45 @@ position = Vector2(1500, 660)
 
 [node name="OpponentDiscard" parent="." unique_id=342447829 instance=ExtResource("16_n3o0a")]
 position = Vector2(400, 270)
+
+[node name="GameEnd" type="Control" parent="." unique_id=1456033091]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GameEndLabel" type="Label" parent="GameEnd" unique_id=1159295996]
+z_index = 100
+layout_mode = 0
+offset_left = 323.0
+offset_top = 231.0
+offset_right = 1652.0
+offset_bottom = 504.0
+theme_override_font_sizes/font_size = 200
+text = "Player X wins!"
+
+[node name="GameEndButton" type="Button" parent="GameEnd" unique_id=220183388]
+layout_mode = 0
+offset_left = 775.0
+offset_top = 557.0
+offset_right = 1281.0
+offset_bottom = 702.0
+theme_override_font_sizes/font_size = 100
+text = "Play Again"
+
+[node name="Label" type="Label" parent="." unique_id=161358215]
+offset_left = 1687.0
+offset_top = 955.0
+offset_right = 1880.0
+offset_bottom = 1024.0
+theme_override_font_sizes/font_size = 50
+text = "Player 1"
+
+[node name="Label2" type="Label" parent="." unique_id=77694801]
+offset_left = 45.0
+offset_top = 37.0
+offset_right = 238.0
+offset_bottom = 106.0
+theme_override_font_sizes/font_size = 50
+text = "Player 2"

@@ -4,6 +4,7 @@ const CARD_SCENE_PATH:String = "uid://ccwhw645gd31j"
 const CARD_DRAW_SPEED:float = 0.2
 const STARTING_HAND_SIZE:int = 5
 
+var o_opponent_deck:Array[String]
 var opponent_deck:Array[String] = ["knight", "archer", "demon", "knight", "knight", "knight", "knight", "knight"]
 var card_database_reference:Script
 var cant_draw_manually:bool = false
@@ -12,6 +13,7 @@ func _ready() -> void:
 	opponent_deck.shuffle()
 	$RichTextLabel.text = str(opponent_deck.size())
 	card_database_reference = preload("res://card_database.gd")
+	o_opponent_deck = opponent_deck.duplicate()
 	for i in range(STARTING_HAND_SIZE):
 		draw_card()
 		cant_draw_manually = true
@@ -44,3 +46,14 @@ func draw_card() -> void:
 	new_card.position = self.global_position
 	get_parent().find_child("OpponentHand").add_card_to_hand(new_card, CARD_DRAW_SPEED)
 	new_card.find_child("CardImageBack").show()
+
+func reset() -> void:
+	opponent_deck = o_opponent_deck
+	opponent_deck.shuffle()
+	$RichTextLabel.text = str(opponent_deck.size())
+	card_database_reference = preload("res://card_database.gd")
+	for i in range(STARTING_HAND_SIZE):
+		draw_card()
+		cant_draw_manually = true
+		await get_tree().create_timer(0.3).timeout
+	cant_draw_manually = false

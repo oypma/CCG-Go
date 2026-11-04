@@ -4,7 +4,8 @@ const CARD_SCENE_PATH:String = "uid://ben1g0hlxn7t1"
 const CARD_DRAW_SPEED:float = 0.2
 const STARTING_HAND_SIZE:int = 5
 
-var player_deck:Array[String] = ["knight", "archer", "demon", "knight", "knight", "knight", "knight", "knight"]
+var player_deck:Array[String] = ["demon", "archer", "demon", "knight", "demon", "knight", "knight", "knight"]
+var o_player_deck:Array[String]
 var card_database_reference:Script
 var drawn_card_this_turn:bool = false
 var cant_draw_manually:bool = false
@@ -13,6 +14,7 @@ func _ready() -> void:
 	player_deck.shuffle()
 	$RichTextLabel.text = str(player_deck.size())
 	card_database_reference = preload("res://card_database.gd")
+	o_player_deck = player_deck.duplicate()
 	for i in range(STARTING_HAND_SIZE):
 		draw_card()
 		drawn_card_this_turn = false
@@ -57,3 +59,16 @@ func draw_card() -> void:
 
 func reset_draw() -> void:
 	drawn_card_this_turn = false
+
+func reset() -> void:
+	player_deck = o_player_deck
+	player_deck.shuffle()
+	$RichTextLabel.text = str(player_deck.size())
+	card_database_reference = preload("res://card_database.gd")
+	for i in range(STARTING_HAND_SIZE):
+		draw_card()
+		drawn_card_this_turn = false
+		cant_draw_manually = true
+		await get_tree().create_timer(0.3).timeout
+	cant_draw_manually = false
+	drawn_card_this_turn = true
