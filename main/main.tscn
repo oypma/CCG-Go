@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dq8lrtp0b0o7b"]
 
-[ext_resource type="Script" uid="uid://mor31csg31b3" path="res://card_manager.gd" id="1_pjrb6"]
+[ext_resource type="Script" uid="uid://mor31csg31b3" path="res://lonely_scripts/card_manager.gd" id="1_pjrb6"]
 [ext_resource type="Script" uid="uid://batb4c8gh8esr" path="res://card_slot/magic_card_slot.gd" id="2_67ri8"]
 [ext_resource type="PackedScene" uid="uid://bj3fgfl7p48vh" path="res://player_hand/player_hand.tscn" id="3_c651c"]
 [ext_resource type="PackedScene" uid="uid://dg2fg4u8xdndo" path="res://card_slot/opponent/opponent_card_slot.tscn" id="3_grrlh"]

@@ -48,8 +48,7 @@ func _on_end_turn_button_pressed() -> void:
 	opponent_turn()
 	
 func opponent_turn() -> void:
-	end_turn_button.disabled = true
-	end_turn_button.visible = false
+	enable_end_turn_button(false)
 	
 	await wait(1)
 	
@@ -77,8 +76,7 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 	if attacker == "opponent":
 		new_pos_y = 1080
 	else:
-		get_parent().find_child("EndTurnButton").disabled = true
-		get_parent().find_child("EndTurnButton").visible = false
+		enable_end_turn_button(false)
 		player_is_attacking = true
 		new_pos_y = 0
 		player_cards_that_attacked_this_turn.append(attacking_card)
@@ -107,8 +105,7 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 	
 	if attacker == "player":
 		player_is_attacking = false
-		get_parent().find_child("EndTurnButton").disabled = false
-		get_parent().find_child("EndTurnButton").visible = true
+		enable_end_turn_button()
 	
 	if player_health <= 0:
 		get_parent().find_child("GameEndLabel").text = "Player 2 Wins!"
@@ -131,8 +128,7 @@ func attack(attacking_card:Card, defending_card:Card, attacker:String) -> void:
 	if attacker == "player":
 		player_is_attacking = true
 		get_parent().find_child("CardManager").selected_monster = null
-		get_parent().find_child("EndTurnButton").disabled = true
-		get_parent().find_child("EndTurnButton").visible = false
+		enable_end_turn_button(false)
 		player_cards_that_attacked_this_turn.append(attacking_card)
 	
 	attacking_card.z_index = 5
@@ -168,8 +164,7 @@ func attack(attacking_card:Card, defending_card:Card, attacker:String) -> void:
 	
 	if attacker == "player":
 		player_is_attacking = false
-		get_parent().find_child("EndTurnButton").disabled = false
-		get_parent().find_child("EndTurnButton").visible = true
+		enable_end_turn_button()
 
 func destroy_card(card:Card, card_owner:String) -> void:
 	var new_pos:Vector2 = Vector2.ZERO
@@ -231,5 +226,12 @@ func end_opponent_turn() -> void:
 	get_parent().find_child("Deck").reset_draw()
 	get_parent().find_child("CardManager").reset_played_monster()
 	is_opponents_turn = false
-	end_turn_button.disabled = false
-	end_turn_button.visible = true
+	enable_end_turn_button()
+
+func enable_end_turn_button(is_enabled:bool = true) -> void:
+	if is_enabled:
+		end_turn_button.disabled = false
+		end_turn_button.visible = true
+	else:
+		end_turn_button.disabled = true
+		end_turn_button.visible = false

@@ -12,7 +12,7 @@ var cant_draw_manually:bool = false
 func _ready() -> void:
 	opponent_deck.shuffle()
 	$RichTextLabel.text = str(opponent_deck.size())
-	card_database_reference = preload("res://card_database.gd")
+	card_database_reference = preload("res://lonely_scripts/card_database.gd")
 	o_opponent_deck = opponent_deck.duplicate()
 	for i in range(STARTING_HAND_SIZE):
 		draw_card()
@@ -51,7 +51,7 @@ func reset() -> void:
 	opponent_deck = o_opponent_deck
 	opponent_deck.shuffle()
 	$RichTextLabel.text = str(opponent_deck.size())
-	card_database_reference = preload("res://card_database.gd")
+	card_database_reference = preload("res://lonely_scripts/card_database.gd")
 	for i in range(STARTING_HAND_SIZE):
 		draw_card()
 		cant_draw_manually = true
