@@ -48,6 +48,7 @@ func _on_end_turn_button_pressed() -> void:
 	opponent_turn()
 	
 func opponent_turn() -> void:
+	get_parent().find_child("CardManager").is_opponents_turn = true
 	enable_end_turn_button(false)
 	
 	await wait(1)
@@ -207,6 +208,7 @@ func try_play_card_with_highest_attack() -> void:
 		if card.attack > card_with_highest_atk.attack:
 			card_with_highest_atk = card
 	
+	random_empty_monster_card_slot.card_in_slot_ref = card_with_highest_atk
 	var tween:Tween = get_tree().create_tween()
 	tween.tween_property(card_with_highest_atk, "position", random_empty_monster_card_slot.position, CARD_MOVE_SPEED)
 	var tween2:Tween = get_tree().create_tween()
@@ -227,6 +229,7 @@ func end_opponent_turn() -> void:
 	get_parent().find_child("CardManager").reset_played_monster()
 	is_opponents_turn = false
 	enable_end_turn_button()
+	get_parent().find_child("CardManager").is_opponents_turn = false
 
 func enable_end_turn_button(is_enabled:bool = true) -> void:
 	if is_enabled:

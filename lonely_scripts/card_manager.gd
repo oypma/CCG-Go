@@ -15,6 +15,7 @@ var is_hovering_on_card:bool = false
 var player_hand_reference:PlayerHand
 var played_monster_card_this_turn:bool = false
 var selected_monster:PlayerCard = null
+var is_opponents_turn:bool = false
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
@@ -66,6 +67,8 @@ func start_drag(card:PlayerCard):
 func finish_drag():
 	var card_slot_found:CardSlot = raycast_check_for_card_slot()
 	card_being_dragged.scale = Vector2(CARD_BIGGER_SCALE, CARD_BIGGER_SCALE)
+	if is_opponents_turn:
+		return
 	if card_slot_found and not card_slot_found.card_in_slot:
 		if card_being_dragged.card_type == card_slot_found.card_slot_type:
 			if card_being_dragged.card_type == "monster" and played_monster_card_this_turn:
@@ -74,6 +77,7 @@ func finish_drag():
 				return
 				
 			card_being_dragged.card_slot_in = card_slot_found
+			card_slot_found.card_in_slot_ref = card_being_dragged
 			card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE, CARD_SMALLER_SCALE)
 			card_being_dragged.z_index = -1
 			is_hovering_on_card = false
