@@ -16,6 +16,7 @@ var player_hand_reference:PlayerHand
 var played_monster_card_this_turn:bool = false
 var selected_monster:PlayerCard = null
 var is_opponents_turn:bool = false
+var card_played_this_turn:Card = null
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
@@ -29,14 +30,14 @@ func _process(delta: float) -> void:
 		clamp(mouse_pos.y, 0, screen_size.y))
 
 func card_clicked(card:PlayerCard):
+	if card == card_played_this_turn:
+		return
 	if card.card_slot_in:
 		if get_parent().find_child("BattleManager").is_opponents_turn == true:
 			return
-		if get_parent().find_child("BattleManager").player_is_attacking:
-			return
 		if card in get_parent().find_child("BattleManager").player_cards_that_attacked_this_turn:
 			return
-		
+
 		if card.card_type != "monster":
 			return
 		
@@ -90,8 +91,10 @@ func finish_drag():
 			if card_being_dragged.card_type == "monster":
 				get_parent().find_child("BattleManager").player_cards_on_battlefield.append(card_being_dragged)
 				played_monster_card_this_turn = true
-			elif card_being_dragged.card_type == "magic":
-				card_being_dragged.ability_script.trigger_ability(get_parent().find_child("BattleManager"), card_being_dragged, get_parent().find_child("InputManager"))
+			if card_being_dragged.ability_script:
+				if card_being_dragged.ability_script is not WhenAttacking:
+					card_being_dragged.ability_script.trigger_ability(get_parent().find_child("BattleManager"), card_being_dragged, get_parent().find_child("InputManager"))
+			card_played_this_turn = card_being_dragged
 			card_being_dragged = null
 			return
 	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)

@@ -1,4 +1,4 @@
-extends Ability
+extends WhenPlayed
 
 const TORNADO = preload("res://magic_attacks/tornado_attack.tscn")
 

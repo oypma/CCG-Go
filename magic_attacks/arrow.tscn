@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://c30dspti71i28"]
+
+[ext_resource type="Texture2D" uid="uid://2frmvi2e23wt" path="res://sprites/Arrows_pack.png" id="1_hel0j"]
+[ext_resource type="Script" uid="uid://je7heaapifap" path="res://magic_attacks/arrow.gd" id="1_qk8io"]
+
+[node name="Arrow" type="Node2D" unique_id=184885004]
+script = ExtResource("1_qk8io")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1202743905]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_hel0j")
+hframes = 3
+vframes = 4

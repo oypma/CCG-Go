@@ -12,7 +12,7 @@ var player_health_label:RichTextLabel = null
 var opponent_health_label:RichTextLabel = null
 var player_cards_that_attacked_this_turn:Array = []
 var is_opponents_turn:bool = false
-var player_is_attacking:bool = false
+var opponent_card_played_this_turn:OpponentCard = null
 
 var opponent_cards_on_battlefield:Array = []
 var player_cards_on_battlefield:Array = []
@@ -41,12 +41,16 @@ func _ready() -> void:
 	opponent_health = starting_health
 	opponent_health_label.text = str(opponent_health)
 
+func direct_damage(damage:int) -> void:
+	opponent_health = max(0, opponent_health - damage)
+	opponent_health_label.text = str(opponent_health)
+
 func _on_end_turn_button_pressed() -> void:
 	is_opponents_turn = true
 	get_parent().find_child("CardManager").unselect_selected_monster()
 	player_cards_that_attacked_this_turn.clear()
 	opponent_turn()
-	
+
 func opponent_turn() -> void:
 	get_parent().find_child("CardManager").is_opponents_turn = true
 	enable_end_turn_button(false)
@@ -64,11 +68,12 @@ func opponent_turn() -> void:
 	if opponent_cards_on_battlefield.size() != 0:
 		var enemy_cards_to_attack:Array = opponent_cards_on_battlefield.duplicate()
 		for card in enemy_cards_to_attack:
-			if player_cards_on_battlefield.size() != 0:
-				var card_to_attack:Card = player_cards_on_battlefield.pick_random()
-				await attack(card, card_to_attack, "opponent")
-			else:
-				await direct_attack(card, "opponent")
+			if card != opponent_card_played_this_turn:
+				if player_cards_on_battlefield.size() != 0:
+					var card_to_attack:Card = player_cards_on_battlefield.pick_random()
+					await attack(card, card_to_attack, "opponent")
+				else:
+					await direct_attack(card, "opponent")
 	
 	end_opponent_turn()
 
@@ -78,7 +83,7 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 		new_pos_y = 1080
 	else:
 		enable_end_turn_button(false)
-		player_is_attacking = true
+		get_parent().find_child("InputManager").inputs_disabled = true
 		new_pos_y = 0
 		player_cards_that_attacked_this_turn.append(attacking_card)
 	
@@ -87,6 +92,7 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 	attacking_card.z_index = 5
 	
 	var tween:Tween = get_tree().create_tween()
+	print(attacking_card)
 	tween.tween_property(attacking_card, "position", new_pos, CARD_MOVE_SPEED)
 	
 	await wait(0.15)
@@ -105,7 +111,10 @@ func direct_attack(attacking_card:Card, attacker:String) -> void:
 	await wait(1)
 	
 	if attacker == "player":
-		player_is_attacking = false
+		if attacking_card.ability_script:
+			if !attacking_card.ability_script is WhenPlayed:
+				await attacking_card.ability_script.trigger_ability(self, attacking_card, get_parent().find_child("InputManager"))
+		get_parent().find_child("InputManager").inputs_disabled = false
 		enable_end_turn_button()
 	
 	if player_health <= 0:
@@ -127,7 +136,7 @@ func _on_end_game_button_pressed() -> void:
 
 func attack(attacking_card:Card, defending_card:Card, attacker:String) -> void:
 	if attacker == "player":
-		player_is_attacking = true
+		get_parent().find_child("InputManager").inputs_disabled = true
 		get_parent().find_child("CardManager").selected_monster = null
 		enable_end_turn_button(false)
 		player_cards_that_attacked_this_turn.append(attacking_card)
@@ -164,7 +173,10 @@ func attack(attacking_card:Card, defending_card:Card, attacker:String) -> void:
 		await wait(1.0)
 	
 	if attacker == "player":
-		player_is_attacking = false
+		if attacking_card.ability_script:
+			if !attacking_card.ability_script is WhenPlayed:
+				await attacking_card.ability_script.trigger_ability(self, attacking_card, get_parent().find_child("InputManager"))
+		get_parent().find_child("InputManager").inputs_disabled = false
 		enable_end_turn_button()
 
 func destroy_card(card:Card, card_owner:String) -> void:
@@ -182,8 +194,9 @@ func destroy_card(card:Card, card_owner:String) -> void:
 		if card in opponent_cards_on_battlefield:
 			opponent_cards_on_battlefield.erase(card)
 	
-	card.card_slot_in.card_in_slot = false
-	card.card_slot_in = null
+	if card.card_slot_in:
+		card.card_slot_in.card_in_slot = false
+		card.card_slot_in = null
 	
 	var tween:Tween = get_tree().create_tween()
 	tween.tween_property(card, "position", new_pos, CARD_MOVE_SPEED)
@@ -192,7 +205,7 @@ func enemy_card_selected(defending_card:OpponentCard) -> void:
 	var attacking_card:PlayerCard = get_parent().find_child("CardManager").selected_monster
 	if attacking_card:
 		if defending_card in opponent_cards_on_battlefield:
-			if player_is_attacking == false:
+			if get_parent().find_child("InputManager").inputs_disabled == false:
 				get_parent().find_child("CardManager").selected_monster = null
 				attack(attacking_card, defending_card, "player")
 
@@ -218,6 +231,7 @@ func try_play_card_with_highest_attack() -> void:
 	opponent_hand.remove_card_from_hand(card_with_highest_atk)
 	card_with_highest_atk.card_slot_in = random_empty_monster_card_slot
 	opponent_cards_on_battlefield.append(card_with_highest_atk)
+	opponent_card_played_this_turn = card_with_highest_atk
 	await wait(1)
 
 func wait(wait_time:float):
@@ -230,6 +244,7 @@ func end_opponent_turn() -> void:
 	is_opponents_turn = false
 	enable_end_turn_button()
 	get_parent().find_child("CardManager").is_opponents_turn = false
+	get_parent().find_child("CardManager").card_played_this_turn = null
 
 func enable_end_turn_button(is_enabled:bool = true) -> void:
 	if is_enabled:

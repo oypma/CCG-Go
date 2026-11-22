@@ -45,7 +45,6 @@ func draw_card() -> void:
 	new_card.card_type = card_database_reference.CARDS[card_drawn_name][2]
 
 	if new_card.card_type == "monster":
-		new_card.get_node("Ability").visible = false
 		new_card.attack = card_database_reference.CARDS[card_drawn_name][0]
 		new_card.get_node("Attack").text = str(new_card.attack)
 		new_card.health = card_database_reference.CARDS[card_drawn_name][1]
@@ -54,10 +53,13 @@ func draw_card() -> void:
 		new_card.get_node("Attack").visible = false
 		new_card.get_node("Health").visible = false
 		new_card.get_node("Ability").visible = true
-		new_card.get_node("Ability").text = card_database_reference.CARDS[card_drawn_name][3]
+	if card_database_reference.CARDS[card_drawn_name][4] != null:
 		var new_card_ability_script_path:String = card_database_reference.CARDS[card_drawn_name][4]
 		if new_card_ability_script_path:
 			new_card.ability_script = load(new_card_ability_script_path).new()
+			new_card.get_node("Ability").text = card_database_reference.CARDS[card_drawn_name][3]
+	else:
+		new_card.get_node("Ability").visible = false
 	var card_manager:CardManager = get_parent().get_node("CardManager")
 	card_manager.add_child(new_card)
 	new_card.name = "Card"
@@ -75,8 +77,8 @@ func reset() -> void:
 	$RichTextLabel.text = str(player_deck.size())
 	card_database_reference = preload("res://lonely_scripts/card_database.gd")
 	for i in range(STARTING_HAND_SIZE):
-		draw_card()
 		drawn_card_this_turn = false
+		draw_card()
 		cant_draw_manually = true
 		await get_tree().create_timer(0.3).timeout
 	cant_draw_manually = false

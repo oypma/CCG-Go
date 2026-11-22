@@ -248,7 +248,7 @@ offset_bottom = 702.0
 theme_override_font_sizes/font_size = 100
 text = "Play Again"
 
-[node name="Label" type="Label" parent="." unique_id=161358215]
+[node name="Player1" type="Label" parent="." unique_id=161358215]
 offset_left = 1687.0
 offset_top = 955.0
 offset_right = 1880.0
@@ -256,7 +256,7 @@ offset_bottom = 1024.0
 theme_override_font_sizes/font_size = 50
 text = "Player 1"
 
-[node name="Label2" type="Label" parent="." unique_id=77694801]
+[node name="Player2" type="Label" parent="." unique_id=77694801]
 offset_left = 45.0
 offset_top = 37.0
 offset_right = 238.0
